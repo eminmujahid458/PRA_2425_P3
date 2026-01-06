@@ -22,20 +22,22 @@ public:
         delete tree;
     }
 
-    int entries() const {
+    int entries() override { 
         return tree->size();
     }
 
-    void insert(std::string key, V value) {
+    void insert(std::string key, V value) override {
         tree->insert(TableEntry<V>(key, value));
     }
 
-    V search(std::string key) const {
+    V search(std::string key) override {
         return tree->search(TableEntry<V>(key)).value;
     }
 
-    V remove(std::string key) {
-        return tree->remove(TableEntry<V>(key)).value;
+    V remove(std::string key) override {
+        V val = tree->search(TableEntry<V>(key)).value;
+        tree->remove(TableEntry<V>(key));
+        return val;
     }
 
     V operator[](std::string key) {
